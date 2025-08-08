@@ -5,6 +5,7 @@ import { useRef } from "react";
 import type { Group } from "three";
 import CometRing from "./comet-ring";
 import TextRing from "./text-ring";
+import * as THREE from "three";
 
 interface EarthProps {
   cometImages: string[];
@@ -27,9 +28,9 @@ export default function Earth({ cometImages }: EarthProps) {
         <meshStandardMaterial color="#24292E" metalness={0.5} roughness={0.7} />
       </mesh>
       <CometRing images={cometImages} />
-      <TextRing text="I love your smile, your voice, your soul — You are my peace, my joy, my dream come true." radius={2} color="#ff6ec4" rotationSpeed={0.005} />
-      <TextRing text="Every heartbeat I feel, every breath I take, it's all because of the love I have deep for you." radius={2.5} color="#a2d5f2" rotationSpeed={-0.004} />
-      <TextRing text="You are my sunshine in the rain, my calm in the storm, and my forever in this beautiful life." radius={3} color="#98fb98" rotationSpeed={0.003} />
+      <TextRing text=".YAD ELGNIS HCAE EURT EMOC MAERD YM YOJ YM ,ECAEP YM ER’UOY — LUOS RUOY ,ECIOV RUOY ,ELIMS ROUY EVOL I" radius={1.5} color="#ff6ec4" rotationSpeed={0.0005} rotationAxis={new THREE.Vector3(0, 1, 0)} />
+      <TextRing text=".UOY ROFPEED EVAH I EVOL EHT FO ESUACEB LLA S’T I ,EKAT I HTAERB YREVE ,LEEF I TAEBTRA EH YREVE" radius={1.6} color="#a2d5f2" rotationSpeed={-0.0004} rotationAxis={new THREE.Vector3(1, 0, 0)} />
+      <TextRing text="Y.EFIL LUFTUAEB SIHT NI REVEROF YM DNA ,MROTS EHT NI MLAC YM ,NIAR EHT NI ENIHSNUS YM ERA UOY" radius={1.7} color="#98fb98" rotationSpeed={0.0003} rotationAxis={new THREE.Vector3(1, 1, 0)} />
     </group>
   );
 }

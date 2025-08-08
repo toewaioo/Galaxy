@@ -6,7 +6,7 @@ import { useRef, useMemo } from "react";
 import type { Group, Sprite as SpriteType } from "three";
 
 const COMET_COUNT = 500;
-const RING_RADIUS = 3.5;
+const RING_RADIUS = 4.5;
 const RING_THICKNESS = 2.5;
 const RING_VERTICAL_SPREAD = 0.5;
 
