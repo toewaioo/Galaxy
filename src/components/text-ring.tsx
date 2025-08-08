@@ -21,7 +21,7 @@ export default function TextRing({ text, radius, color, rotationSpeed }: TextRin
 
     useFrame(() => {
         if (groupRef.current) {
-            groupRef.current.rotation.y += rotationSpeed * 0.1;
+            groupRef.current.rotation.y += rotationSpeed * 0.05;
         }
     });
 
