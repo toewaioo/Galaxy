@@ -13,15 +13,35 @@ export default function GalaxyPage({ params }: { params: { id: string } }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchImages = async () => {
+    const processParams = async () => {
       try {
         setLoading(true);
-        const decodedPrompt = decodeURIComponent(params.id);
-        const result = await generateMemories({ prompt: decodedPrompt });
-        if (result && result.imageUrls) {
-          setCometImages(result.imageUrls);
-        } else {
-          setError("Could not generate memories. Please try a different prompt.");
+        const [type, encodedData] = params.id.split(/:(.*)/s);
+        
+        if (type === 'prompt' && encodedData) {
+          const decodedPrompt = decodeURIComponent(encodedData);
+          const result = await generateMemories({ prompt: decodedPrompt });
+          if (result && result.imageUrls) {
+            setCometImages(result.imageUrls);
+          } else {
+            setError("Could not generate memories. Please try a different prompt.");
+          }
+        } else if (type === 'images' && encodedData) {
+            try {
+                const decodedUris = decodeURIComponent(encodedData);
+                const uris = JSON.parse(decodedUris);
+                if (Array.isArray(uris) && uris.every(item => typeof item === 'string')) {
+                    setCometImages(uris);
+                } else {
+                    setError("Invalid image data provided.");
+                }
+            } catch (e) {
+                console.error("Error parsing image data", e);
+                setError("The link appears to be broken or contain invalid image data.");
+            }
+        }
+         else {
+          setError("Invalid link. Could not determine how to create the galaxy.");
         }
       } catch (e) {
         console.error(e);
@@ -31,7 +51,7 @@ export default function GalaxyPage({ params }: { params: { id: string } }) {
       }
     };
 
-    fetchImages();
+    processParams();
   }, [params.id]);
 
   if (loading) {
