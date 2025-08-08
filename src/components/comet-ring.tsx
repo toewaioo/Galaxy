@@ -5,7 +5,7 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
 import type { Group, Sprite as SpriteType } from "three";
 
-const COMET_COUNT = 200;
+const COMET_COUNT = 500;
 const RING_RADIUS = 3.5;
 const RING_THICKNESS = 1.5;
 const RING_VERTICAL_SPREAD = 0.5;
@@ -31,7 +31,7 @@ function Comet(props: CometProps) {
       spriteRef.current.material.opacity = props.initialOpacity + pulse * 0.2;
 
       // Animate orbit
-      const angle = props.initialAngle + clock.getElapsedTime() * props.speed * 0.1;
+      const angle = props.initialAngle + clock.getElapsedTime() * props.speed * 0.02;
       spriteRef.current.position.x = Math.cos(angle) * props.radius;
       spriteRef.current.position.z = Math.sin(angle) * props.radius;
     }
@@ -73,7 +73,7 @@ export default function CometRing({ images }: CometRingProps) {
             imageUrl: imageSources[i % imageSources.length],
             initialAngle: angle,
             radius: radius,
-            speed: (Math.random() * 0.3 + 0.1) * (Math.random() > 0.5 ? 1 : -1),
+            speed: (Math.random() * 0.1 + 0.1) * (Math.random() > 0.5 ? 1 : -1),
             pulseSpeed: Math.random() * 0.5 + 0.5,
             initialOpacity: Math.random() * 0.4 + 0.5,
         });
