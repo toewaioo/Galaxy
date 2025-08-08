@@ -2,6 +2,7 @@
 
 import Galaxy from "@/components/galaxy";
 import { useState, useRef, ChangeEvent } from "react";
+import Music from "@/components/music";
 
 export default function Home() {
   const [cometImages, setCometImages] = useState<string[]>([]);
@@ -21,6 +22,7 @@ export default function Home() {
 
   return (
     <main className="relative w-screen h-screen">
+      <Music />
       <div
         id="title"
         className="absolute top-5 w-full text-center text-[#ffb6c1] z-10 text-4xl pointer-events-none"
