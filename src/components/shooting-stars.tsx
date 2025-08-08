@@ -66,12 +66,12 @@ function ShootingStar() {
 
   return (
     <mesh ref={meshRef} position={position} quaternion={rotation}>
-      <cylinderGeometry args={[0.1, 1, 40, 16]} />
+      <cylinderGeometry args={[0, 0.5, 30, 16]} />
       <meshBasicMaterial 
         map={trailTexture} 
         blending={THREE.AdditiveBlending} 
         transparent 
-        opacity={0.8}
+        opacity={0.9}
         depthTest={false}
       />
     </mesh>
