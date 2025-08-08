@@ -3,23 +3,44 @@
 import * as THREE from 'three';
 import { useFrame, useLoader } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
-import type { Group } from "three";
+import type { Group, Sprite as SpriteType } from "three";
 
-const COMET_COUNT = 30;
-const RING_RADIUS = 2.5;
+const COMET_COUNT = 200;
+const RING_RADIUS = 3.5;
+const RING_THICKNESS = 1.5;
+const RING_VERTICAL_SPREAD = 0.5;
 
 interface CometProps {
   imageUrl: string;
-  onClick: () => void;
+  position: [number, number, number];
+  initialAngle: number;
+  radius: number;
+  speed: number;
+  pulseSpeed: number;
+  initialOpacity: number;
 }
 
-function Comet({ imageUrl, onClick }: CometProps) {
-  const texture = useLoader(THREE.TextureLoader, imageUrl);
+function Comet(props: CometProps) {
+  const spriteRef = useRef<SpriteType>(null!);
+  const texture = useLoader(THREE.TextureLoader, props.imageUrl);
+
+  useFrame(({ clock }) => {
+    if (spriteRef.current) {
+      // Animate opacity
+      const pulse = Math.sin(clock.getElapsedTime() * props.pulseSpeed);
+      spriteRef.current.material.opacity = props.initialOpacity + pulse * 0.2;
+
+      // Animate orbit
+      const angle = props.initialAngle + clock.getElapsedTime() * props.speed * 0.1;
+      spriteRef.current.position.x = Math.cos(angle) * props.radius;
+      spriteRef.current.position.z = Math.sin(angle) * props.radius;
+    }
+  });
+
   return (
-    <mesh onClick={onClick} rotation-x={-Math.PI / 2}>
-      <planeGeometry args={[0.5, 0.5]} />
-      <meshBasicMaterial map={texture} transparent side={THREE.DoubleSide} />
-    </mesh>
+    <sprite ref={spriteRef} position={props.position} scale={[0.5, 0.5, 1]}>
+      <spriteMaterial map={texture} transparent opacity={props.initialOpacity} />
+    </sprite>
   );
 }
 
@@ -32,7 +53,7 @@ export default function CometRing({ images }: CometRingProps) {
 
   useFrame(() => {
     if (ringRef.current) {
-      ringRef.current.rotation.z += 0.002;
+      ringRef.current.rotation.y += 0.0005; // Slow rotation of the entire system
     }
   });
 
@@ -41,30 +62,29 @@ export default function CometRing({ images }: CometRingProps) {
     const imageSources = images.length > 0 ? images : Array(COMET_COUNT).fill('https://placehold.co/100x100.png');
     
     for (let i = 0; i < COMET_COUNT; i++) {
-        const angle = (i / COMET_COUNT) * Math.PI * 2;
-        const x = Math.cos(angle) * RING_RADIUS;
-        const y = Math.sin(angle) * RING_RADIUS;
+        const angle = Math.random() * Math.PI * 2;
+        const radius = RING_RADIUS + (Math.random() - 0.5) * RING_THICKNESS;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius;
+        const y = (Math.random() - 0.5) * RING_VERTICAL_SPREAD;
+        
         data.push({
-            position: [x, y, 0] as [number, number, number],
-            rotationZ: angle,
-            imageUrl: imageSources[i % imageSources.length]
+            position: [x, y, z] as [number, number, number],
+            imageUrl: imageSources[i % imageSources.length],
+            initialAngle: angle,
+            radius: radius,
+            speed: (Math.random() * 0.3 + 0.1) * (Math.random() > 0.5 ? 1 : -1),
+            pulseSpeed: Math.random() * 0.5 + 0.5,
+            initialOpacity: Math.random() * 0.4 + 0.5,
         });
     }
     return data;
   }, [images]);
 
-  const handleCometClick = (index: number) => {
-    console.log(`Comet ${index} clicked!`);
-    // We will implement the image replacement logic here later
-  };
-
-
   return (
-    <group ref={ringRef} rotation-x={Math.PI / 3}>
+    <group ref={ringRef}>
       {cometData.map((data, i) => (
-         <group key={i} position={data.position} rotation-z={data.rotationZ}>
-            <Comet imageUrl={data.imageUrl} onClick={() => handleCometClick(i)} />
-         </group>
+         <Comet key={i} {...data} />
       ))}
     </group>
   );
