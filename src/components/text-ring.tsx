@@ -60,7 +60,6 @@ export default function TextRing({
               color={color}
               emissive={color}
               emissiveIntensity={0.6}
-              shininess={100}
             />
           </Text3D>
 

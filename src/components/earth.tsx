@@ -17,7 +17,7 @@ export default function Earth({ cometImages }: EarthProps) {
   useFrame(() => {
     if (groupRef.current) {
       // Rotate on its own axis
-      groupRef.current.rotation.y += 0.002;
+      groupRef.current.rotation.y += 0.0009;
     }
   });
 
@@ -25,12 +25,12 @@ export default function Earth({ cometImages }: EarthProps) {
     <group ref={groupRef}>
       <mesh castShadow receiveShadow>
         <sphereGeometry args={[1, 32, 32]} />
-        <meshStandardMaterial color="#24292E" metalness={0.5} roughness={0.7} />
+        <meshStandardMaterial color="#0b3d91" metalness={0.0001} roughness={0.00007} />
       </mesh>
       <CometRing images={cometImages} />
-      <TextRing text=".YAD ELGNIS HCAE EURT EMOC MAERD YM YOJ YM ,ECAEP YM ER’UOY — LUOS RUOY ,ECIOV RUOY ,ELIMS ROUY EVOL I" radius={1.5} color="#ff6ec4" rotationSpeed={0.0005} rotationAxis={new THREE.Vector3(0, 1, 0)} />
-      <TextRing text=".UOY ROFPEED EVAH I EVOL EHT FO ESUACEB LLA S’T I ,EKAT I HTAERB YREVE ,LEEF I TAEBTRA EH YREVE" radius={1.6} color="#a2d5f2" rotationSpeed={-0.0004} rotationAxis={new THREE.Vector3(1, 0, 0)} />
-      <TextRing text="Y.EFIL LUFTUAEB SIHT NI REVEROF YM DNA ,MROTS EHT NI MLAC YM ,NIAR EHT NI ENIHSNUS YM ERA UOY" radius={1.7} color="#98fb98" rotationSpeed={0.0003} rotationAxis={new THREE.Vector3(1, 1, 0)} />
+      <TextRing text=".YAD ELGNIS HCAE EURT EMOC MAERD YM YOJ YM ,ECAEP YM ER’UOY — LUOS RUOY ,ECIOV RUOY ,ELIMS ROUY EVOL I" radius={1.5} color="#ff6ec4" rotationSpeed={0.001} rotationAxis={new THREE.Vector3(0, 1, 0)} />
+      <TextRing text=".UOY ROFPEED EVAH I EVOL EHT FO ESUACEB LLA S’T I ,EKAT I HTAERB YREVE ,LEEF I TAEBTRA EH YREVE" radius={1.6} color="#a2d5f2" rotationSpeed={-0.001} rotationAxis={new THREE.Vector3(1, 0, 0)} />
+      <TextRing text="Y.EFIL LUFTUAEB SIHT NI REVEROF YM DNA ,MROTS EHT NI MLAC YM ,NIAR EHT NI ENIHSNUS YM ERA UOY" radius={1.7} color="#98fb98" rotationSpeed={0.001} rotationAxis={new THREE.Vector3(1, 1, 0)} />
     </group>
   );
 }
