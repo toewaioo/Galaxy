@@ -5,13 +5,13 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { useRef } from "react";
 import type { Group } from "three";
 
-const COMET_COUNT = 30;
+const COMET_COUNT = 12;
 const RING_RADIUS = 2.5;
 
 function Comet() {
   const texture = useLoader(THREE.TextureLoader, 'https://placehold.co/100x100.png');
   return (
-    <mesh>
+    <mesh rotation-x={-Math.PI / 2}>
       <planeGeometry args={[0.5, 0.5]} />
       <meshBasicMaterial map={texture} transparent side={THREE.DoubleSide} />
     </mesh>
@@ -33,7 +33,7 @@ export default function CometRing() {
     const x = Math.cos(angle) * RING_RADIUS;
     const y = Math.sin(angle) * RING_RADIUS;
     comets.push(
-      <group key={i} position={[x, y, 0]} rotation-z={angle + Math.PI / 2}>
+      <group key={i} position={[x, y, 0]} rotation-z={angle}>
         <Comet />
       </group>
     );
