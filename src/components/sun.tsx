@@ -15,13 +15,13 @@ export default function Sun() {
 
   return (
     <mesh ref={meshRef}>
-      <sphereGeometry args={[4, 32, 32]} />
+      <sphereGeometry args={[8, 64, 64]} />
       <meshStandardMaterial
         color="#FDD262"
         emissive="#FDD262"
-        emissiveIntensity={2}
+        emissiveIntensity={5}
       />
-      <pointLight castShadow position={[0, 0, 0]} intensity={100} color="#FDD262" />
+      <pointLight castShadow position={[0, 0, 0]} intensity={250} color="#FDD262" distance={1000} />
     </mesh>
   );
 }
