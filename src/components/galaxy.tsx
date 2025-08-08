@@ -7,7 +7,7 @@ import Earth from "./earth";
 
 export default function Galaxy() {
   return (
-    <Canvas camera={{ position: [0, 20, 40], fov: 45 }}>
+    <Canvas camera={{ position: [0, 20, 40], fov: 45 }} shadows>
       <ambientLight intensity={0.1} />
       <Stars
         radius={100}
