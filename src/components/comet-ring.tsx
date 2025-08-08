@@ -5,7 +5,7 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
 import type { Group } from "three";
 
-const COMET_COUNT = 12;
+const COMET_COUNT = 30;
 const RING_RADIUS = 2.5;
 
 interface CometProps {
