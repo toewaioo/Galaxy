@@ -5,7 +5,11 @@ import { useRef } from "react";
 import type { Group } from "three";
 import CometRing from "./comet-ring";
 
-export default function Earth() {
+interface EarthProps {
+  cometImages: string[];
+}
+
+export default function Earth({ cometImages }: EarthProps) {
   const groupRef = useRef<Group>(null!);
 
   useFrame(({ clock }) => {
@@ -27,7 +31,7 @@ export default function Earth() {
         <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial color="#24292E" metalness={0.5} roughness={0.7} />
       </mesh>
-      <CometRing />
+      <CometRing images={cometImages} />
     </group>
   );
 }
