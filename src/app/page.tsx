@@ -54,11 +54,6 @@ export default function Home() {
           onChange={handleImageUpload}
         />
       </div>
-      
-      <div id="message" className="absolute bottom-8 left-8 text-[#a2d5f2] text-lg max-w-xs bg-[rgba(25,25,35,0.6)] p-4 rounded-lg border-l-2 border-[#ff6ec4]" style={{ fontFamily: "'Playfair Display', serif", backdropFilter: "blur(5px)" }}>
-        Every star in this galaxy reminds me of a precious moment with you.
-      </div>
-      
       <div id="heart" className="absolute bottom-8 right-8 text-[#ff6ec4] text-3xl z-10" style={{ animation: "heartbeat 1.2s infinite" }}>
         ❤
       </div>

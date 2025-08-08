@@ -18,7 +18,7 @@ export default function Sun() {
       <sphereGeometry args={[8, 64, 64]} />
       <meshStandardMaterial
         color="#FDD262"
-        emissive="#FDD262"
+        emissive="#ff4500"
         emissiveIntensity={5}
       />
       <pointLight castShadow position={[0, 0, 0]} intensity={250} color="#FDD262" distance={1000} />
