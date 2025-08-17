@@ -9,6 +9,7 @@ import { Loader2, Upload } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { createGalaxyWithPrompt, createGalaxyWithImages } from "@/services/galaxyService";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
@@ -20,8 +21,18 @@ export default function Home() {
   const handleCreateWithPrompt = async () => {
     if (!prompt.trim()) return;
     setLoading(true);
-    const encodedPrompt = encodeURIComponent(prompt.trim());
-    router.push(`/galaxy/prompt:${encodedPrompt}`);
+    try {
+      const galaxyId = await createGalaxyWithPrompt(prompt.trim());
+      router.push(`/galaxy/${galaxyId}`);
+    } catch (error) {
+      console.error("Error creating galaxy with prompt:", error);
+      toast({
+        variant: "destructive",
+        title: "Creation Failed",
+        description: "Could not create your galaxy. Please try again.",
+      });
+      setLoading(false);
+    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +49,7 @@ export default function Home() {
       setSelectedFiles(files);
     }
   };
-
+  
   const handleCreateWithUpload = async () => {
     if (selectedFiles.length === 0) return;
     setLoading(true);
@@ -54,10 +65,10 @@ export default function Home() {
 
     try {
       const dataUris = await Promise.all(selectedFiles.map(fileToDataUri));
-      const encodedUris = encodeURIComponent(JSON.stringify(dataUris));
-      router.push(`/galaxy/images:${encodedUris}`);
+      const galaxyId = await createGalaxyWithImages(dataUris);
+      router.push(`/galaxy/${galaxyId}`);
     } catch (error) {
-      console.error("Error converting files to Data URIs", error);
+      console.error("Error creating galaxy with images:", error);
       toast({
         variant: "destructive",
         title: "Upload Error",

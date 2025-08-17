@@ -4,8 +4,8 @@
 import Galaxy from "@/components/galaxy";
 import { useState, useEffect } from "react";
 import Music from "@/components/music";
-import { generateMemories } from "@/ai/flows/generate-memories-flow";
 import { Loader2 } from "lucide-react";
+import { getGalaxyById } from "@/services/galaxyService";
 
 export default function GalaxyPage({ params }: { params: { id: string } }) {
   const [cometImages, setCometImages] = useState<string[]>([]);
@@ -13,45 +13,30 @@ export default function GalaxyPage({ params }: { params: { id: string } }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const processParams = async () => {
+    const fetchGalaxyData = async () => {
+      if (!params.id) {
+        setError("No galaxy ID provided.");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        const [type, encodedData] = params.id.split(/:(.*)/s);
-        
-        if (type === 'prompt' && encodedData) {
-          const decodedPrompt = decodeURIComponent(encodedData);
-          const result = await generateMemories({ prompt: decodedPrompt });
-          if (result && result.imageUrls) {
-            setCometImages(result.imageUrls);
-          } else {
-            setError("Could not generate memories. Please try a different prompt.");
-          }
-        } else if (type === 'images' && encodedData) {
-            try {
-                const decodedUris = decodeURIComponent(encodedData);
-                const uris = JSON.parse(decodedUris);
-                if (Array.isArray(uris) && uris.every(item => typeof item === 'string')) {
-                    setCometImages(uris);
-                } else {
-                    setError("Invalid image data provided.");
-                }
-            } catch (e) {
-                console.error("Error parsing image data", e);
-                setError("The link appears to be broken or contain invalid image data.");
-            }
-        }
-         else {
-          setError("Invalid link. Could not determine how to create the galaxy.");
+        const images = await getGalaxyById(params.id);
+        if (images && images.length > 0) {
+          setCometImages(images);
+        } else {
+          setError("Could not find a galaxy with this link. It may have been removed or the link is incorrect.");
         }
       } catch (e) {
         console.error(e);
-        setError("An error occurred while creating your galaxy. Please try again.");
+        setError("An error occurred while loading your galaxy. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    processParams();
+    fetchGalaxyData();
   }, [params.id]);
 
   if (loading) {
@@ -59,7 +44,7 @@ export default function GalaxyPage({ params }: { params: { id: string } }) {
       <div className="w-screen h-screen flex flex-col items-center justify-center text-white bg-black">
         <Loader2 className="w-12 h-12 animate-spin text-[#ffb6c1] mb-4" />
         <p className="text-xl" style={{ fontFamily: "'Dancing Script', cursive" }}>
-          Crafting your universe...
+          Entering your universe...
         </p>
       </div>
     );
